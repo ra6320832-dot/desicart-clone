@@ -2,9 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Search, ShoppingCart, Menu, MessageCircle, Truck, ShieldCheck, Headphones as HeadphonesIcon, Zap, Star, ChevronRight, ChevronLeft, User } from "lucide-react";
 import { products, waLinkFor } from "@/lib/products";
-import watchImg from "@/assets/bolt-pro-watch.png";
-import earbudsImg from "@/assets/earbuds.png";
-import headphonesImg from "@/assets/headphones.png";
+import watchImg from "@/assets/ultra3-watch.png";
+import earbudsImg from "@/assets/airpods-pro-2.png";
+import headphonesImg from "@/assets/akg-handsfree.png";
+import speakerImg from "@/assets/kts-1185-speaker.png";
+import powerbankImg from "@/assets/powerbank.png";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -20,9 +22,10 @@ function Navbar() {
   const [open, setOpen] = useState(false);
   const links = [
     { label: "Home", href: "/" },
-    { label: "Smart Watches", href: "/product/bolt-pro" },
-    { label: "Earbuds", href: "/product/sonic-buds-x1" },
-    { label: "Headphones", href: "/product/aurora-headphones" },
+    { label: "Smart Watches", href: "/product/ultra-3-smartwatch" },
+    { label: "Earbuds", href: "/product/airpods-pro-2-black" },
+    { label: "Speakers", href: "/product/kts-1185-speaker" },
+    { label: "Accessories", href: "/product/super-charger-powerbank" },
     { label: "Support", href: "#support" },
   ];
 
@@ -156,11 +159,11 @@ function HeroSlider() {
 }
 
 const categories = [
-  { label: "Smart Watches", img: watchImg, slug: "bolt-pro" },
-  { label: "New Launch", img: earbudsImg, slug: "sonic-buds-x1" },
-  { label: "Best Offers", img: watchImg, slug: "bolt-pro" },
-  { label: "Headphones", img: headphonesImg, slug: "aurora-headphones" },
-  { label: "Earbuds", img: earbudsImg, slug: "sonic-buds-x1" },
+  { label: "Smart Watches", img: watchImg, slug: "ultra-3-smartwatch" },
+  { label: "Earbuds", img: earbudsImg, slug: "airpods-pro-2-black" },
+  { label: "Speakers", img: speakerImg, slug: "kts-1185-speaker" },
+  { label: "Power Banks", img: powerbankImg, slug: "super-charger-powerbank" },
+  { label: "Headphones", img: headphonesImg, slug: "akg-handsfree" },
 ];
 
 function Categories() {
@@ -247,7 +250,7 @@ function Products() {
 
 function Footer() {
   const footerGroups = [
-    { title: "Shop", links: [{ label: "Smart Watches", href: "/product/bolt-pro" }, { label: "Earbuds", href: "/product/sonic-buds-x1" }, { label: "Headphones", href: "/product/aurora-headphones" }] },
+    { title: "Shop", links: [{ label: "Smart Watches", href: "/product/ultra-3-smartwatch" }, { label: "Earbuds", href: "/product/airpods-pro-2-black" }, { label: "Speakers", href: "/product/kts-1185-speaker" }, { label: "Power Banks", href: "/product/super-charger-powerbank" }] },
     { title: "Support", links: [{ label: "WhatsApp Support", href: `https://wa.me/923214028277?text=${encodeURIComponent("Hi DesiCart! I need support.")}` }, { label: "Order Help", href: "#products" }, { label: "Free Delivery", href: "#products" }] },
     { title: "Company", links: [{ label: "Home", href: "/" }, { label: "Featured Products", href: "#products" }, { label: "Contact", href: `https://wa.me/923214028277?text=${encodeURIComponent("Hi DesiCart! I want to contact you.")}` }] },
   ];
