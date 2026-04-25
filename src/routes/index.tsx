@@ -246,20 +246,26 @@ function Products() {
 }
 
 function Footer() {
+  const footerGroups = [
+    { title: "Shop", links: [{ label: "Smart Watches", href: "/product/bolt-pro" }, { label: "Earbuds", href: "/product/sonic-buds-x1" }, { label: "Headphones", href: "/product/aurora-headphones" }] },
+    { title: "Support", links: [{ label: "WhatsApp Support", href: `https://wa.me/923214028277?text=${encodeURIComponent("Hi DesiCart! I need support.")}` }, { label: "Order Help", href: "#products" }, { label: "Free Delivery", href: "#products" }] },
+    { title: "Company", links: [{ label: "Home", href: "/" }, { label: "Featured Products", href: "#products" }, { label: "Contact", href: `https://wa.me/923214028277?text=${encodeURIComponent("Hi DesiCart! I want to contact you.")}` }] },
+  ];
+
   return (
-    <footer className="border-t border-border bg-secondary/40">
+    <footer id="support" className="border-t border-border bg-secondary/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
         <div className="col-span-2 md:col-span-1">
           <p className="font-display text-2xl font-black mb-3 text-foreground">Desi<span className="text-accent">Cart</span></p>
           <p className="text-sm text-muted-foreground">Premium tech. Pakistani roots.</p>
         </div>
-        {["Shop", "Support", "Company"].map((h) => (
-          <div key={h}>
-            <p className="font-bold mb-3 text-xs sm:text-sm uppercase tracking-widest text-foreground">{h}</p>
+        {footerGroups.map((group) => (
+          <div key={group.title}>
+            <p className="font-bold mb-3 text-xs sm:text-sm uppercase tracking-widest text-foreground">{group.title}</p>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-accent">Link one</a></li>
-              <li><a href="#" className="hover:text-accent">Link two</a></li>
-              <li><a href="#" className="hover:text-accent">Link three</a></li>
+              {group.links.map((link) => (
+                <li key={link.label}><a href={link.href} className="hover:text-accent">{link.label}</a></li>
+              ))}
             </ul>
           </div>
         ))}
