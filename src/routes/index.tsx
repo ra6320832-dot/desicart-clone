@@ -17,30 +17,47 @@ export const Route = createFileRoute("/")({
 });
 
 function Navbar() {
-  const links = ["Home", "Smart Watches", "Earbuds", "Headphones", "Support"];
+  const [open, setOpen] = useState(false);
+  const links = [
+    { label: "Home", href: "/" },
+    { label: "Smart Watches", href: "/product/bolt-pro" },
+    { label: "Earbuds", href: "/product/sonic-buds-x1" },
+    { label: "Headphones", href: "/product/aurora-headphones" },
+    { label: "Support", href: "#support" },
+  ];
+
   return (
     <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button aria-label="Menu" className="md:hidden text-foreground"><Menu className="h-6 w-6" /></button>
+          <button onClick={() => setOpen((v) => !v)} aria-label="Menu" className="md:hidden text-foreground"><Menu className="h-6 w-6" /></button>
           <Link to="/" className="font-display text-xl sm:text-2xl font-black tracking-tight text-foreground">
             Desi<span className="text-accent">Cart</span>
           </Link>
         </div>
         <ul className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/80">
-          {links.map((l) => (
-            <li key={l}><a href="#" className="hover:text-accent transition-colors">{l}</a></li>
+          {links.map((link) => (
+            <li key={link.label}><a href={link.href} className="hover:text-accent transition-colors">{link.label}</a></li>
           ))}
         </ul>
         <div className="flex items-center gap-3 sm:gap-4 text-foreground">
-          <button aria-label="Search" className="hover:text-accent transition-colors"><Search className="h-5 w-5" /></button>
-          <button aria-label="Account" className="hidden sm:inline hover:text-accent transition-colors"><User className="h-5 w-5" /></button>
-          <button aria-label="Cart" className="relative hover:text-accent transition-colors">
+          <a href="#products" aria-label="Search products" className="hover:text-accent transition-colors"><Search className="h-5 w-5" /></a>
+          <a href="#support" aria-label="Account support" className="hidden sm:inline hover:text-accent transition-colors"><User className="h-5 w-5" /></a>
+          <a href={waLinkFor("customer cart order")} target="_blank" rel="noopener noreferrer" aria-label="Cart" className="relative hover:text-accent transition-colors">
             <ShoppingCart className="h-5 w-5" />
             <span className="absolute -top-2 -right-2 bg-foreground text-background text-[10px] h-4 w-4 rounded-full flex items-center justify-center font-bold">0</span>
-          </button>
+          </a>
         </div>
       </div>
+      {open && (
+        <div className="md:hidden border-t border-border bg-background px-4 py-3">
+          <div className="flex flex-col gap-3 text-sm font-semibold text-foreground/80">
+            {links.map((link) => (
+              <a key={link.label} href={link.href} onClick={() => setOpen(false)} className="py-1 hover:text-accent transition-colors">{link.label}</a>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
@@ -139,11 +156,11 @@ function HeroSlider() {
 }
 
 const categories = [
-  { label: "Smart Watches", img: watchImg },
-  { label: "New Launch", img: earbudsImg },
-  { label: "Best Offers", img: watchImg },
-  { label: "Headphones", img: headphonesImg },
-  { label: "Earbuds", img: earbudsImg },
+  { label: "Smart Watches", img: watchImg, slug: "bolt-pro" },
+  { label: "New Launch", img: earbudsImg, slug: "sonic-buds-x1" },
+  { label: "Best Offers", img: watchImg, slug: "bolt-pro" },
+  { label: "Headphones", img: headphonesImg, slug: "aurora-headphones" },
+  { label: "Earbuds", img: earbudsImg, slug: "sonic-buds-x1" },
 ];
 
 function Categories() {
@@ -151,12 +168,12 @@ function Categories() {
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <div className="grid grid-cols-5 gap-3 sm:gap-6">
         {categories.map((c) => (
-          <a key={c.label} href="#" className="flex flex-col items-center gap-2 group">
+          <Link key={c.label} to="/product/$slug" params={{ slug: c.slug }} className="flex flex-col items-center gap-2 group">
             <div className="h-16 w-16 sm:h-24 sm:w-24 rounded-full bg-secondary border border-border flex items-center justify-center overflow-hidden group-hover:border-accent transition-colors">
               <img src={c.img} alt={c.label} loading="lazy" className="h-3/4 w-3/4 object-contain" />
             </div>
             <span className="text-[10px] sm:text-xs font-bold text-center text-foreground">{c.label}</span>
-          </a>
+          </Link>
         ))}
       </div>
     </section>
@@ -188,13 +205,13 @@ function FeatureStrip() {
 
 function Products() {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+    <section id="products" className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
       <div className="flex items-end justify-between mb-8 sm:mb-12">
         <div>
           <p className="text-accent text-xs font-bold uppercase tracking-widest mb-2">Shop the Drop</p>
           <h2 className="font-display text-3xl sm:text-4xl md:text-6xl font-black text-foreground">Featured Products</h2>
         </div>
-        <a href="#" className="hidden md:inline-flex items-center gap-2 text-sm font-semibold text-foreground hover:text-accent transition-colors">
+        <a href="#products" className="hidden md:inline-flex items-center gap-2 text-sm font-semibold text-foreground hover:text-accent transition-colors">
           View All <ChevronRight className="h-4 w-4" />
         </a>
       </div>
