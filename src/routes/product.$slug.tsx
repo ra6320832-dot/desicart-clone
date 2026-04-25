@@ -42,9 +42,10 @@ function MiniNav() {
   const [open, setOpen] = useState(false);
   const links = [
     { label: "Home", href: "/" },
-    { label: "Smart Watches", href: "/product/bolt-pro" },
-    { label: "Earbuds", href: "/product/sonic-buds-x1" },
-    { label: "Headphones", href: "/product/aurora-headphones" },
+    { label: "Smart Watches", href: "/product/ultra-3-smartwatch" },
+    { label: "Earbuds", href: "/product/airpods-pro-2-black" },
+    { label: "Speakers", href: "/product/kts-1185-speaker" },
+    { label: "Accessories", href: "/product/super-charger-powerbank" },
     { label: "Support", href: "https://wa.me/923214028277?text=Hi%20DesiCart!%20I%20need%20support." },
   ];
 
