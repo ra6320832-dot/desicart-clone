@@ -24,19 +24,14 @@ export function CustomerOrderForm({ product }: CustomerOrderFormProps) {
       .filter(Boolean)
       .join("\n");
 
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    return `https://web.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
   }, [details, product.name, product.price, qty]);
 
   const submitOrder = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
-    // Use location assignment as a reliable fallback since window.open
-    // can be blocked by popup blockers on mobile browsers.
-    const win = window.open(whatsappLink, "_blank", "noopener,noreferrer");
-    if (!win) {
-      window.location.href = whatsappLink;
-    }
+    window.open(whatsappLink, "_blank", "noopener,noreferrer");
   };
 
   return (
