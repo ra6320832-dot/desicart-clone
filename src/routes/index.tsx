@@ -1,5 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Search, ShoppingCart, Menu, MessageCircle, Truck, ShieldCheck, Headphones as HeadphonesIcon, Zap, Star, ChevronRight, User } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Search, ShoppingCart, Menu, MessageCircle, Truck, ShieldCheck, Headphones as HeadphonesIcon, Zap, Star, ChevronRight, ChevronLeft, User } from "lucide-react";
+import { products, waLinkFor } from "@/lib/products";
 import watchImg from "@/assets/bolt-pro-watch.png";
 import earbudsImg from "@/assets/earbuds.png";
 import headphonesImg from "@/assets/headphones.png";
@@ -8,28 +10,11 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "DesiCart — BOLT PRO Smartwatch | Pakistan's 1st Flat Edge Design" },
-      { name: "description", content: "Pre-order the BOLT PRO by DesiCart — Pakistan's 1st Flat Edge Design Smartwatch. Premium audio & wearables." },
+      { title: "DesiCart — Premium Smartwatches, Earbuds & Headphones" },
+      { name: "description", content: "Shop premium smartwatches, earbuds and headphones at DesiCart. Order on WhatsApp with free delivery across Pakistan." },
     ],
   }),
 });
-
-const WA_LINK = "https://wa.me/03214028277?text=I%20want%20to%20order%20the%20Bolt%20Pro";
-
-function TopBar() {
-  const text = "Congratulations 🎉! FREE DELIVERY applied.";
-  return (
-    <div className="bg-neon-green text-black overflow-hidden py-2 text-xs sm:text-sm font-semibold">
-      <div className="flex animate-marquee whitespace-nowrap">
-        {Array.from({ length: 16 }).map((_, i) => (
-          <span key={i} className="mx-4 sm:mx-6 flex items-center gap-2">
-            {text} <span className="opacity-60">•</span>
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function Navbar() {
   const links = ["Home", "Smart Watches", "Earbuds", "Headphones", "Support"];
@@ -38,9 +23,9 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button aria-label="Menu" className="md:hidden text-foreground"><Menu className="h-6 w-6" /></button>
-          <a href="#" className="font-display text-xl sm:text-2xl font-black tracking-tight text-foreground">
+          <Link to="/" className="font-display text-xl sm:text-2xl font-black tracking-tight text-foreground">
             Desi<span className="text-accent">Cart</span>
-          </a>
+          </Link>
         </div>
         <ul className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/80">
           {links.map((l) => (
@@ -60,48 +45,93 @@ function Navbar() {
   );
 }
 
-function Hero() {
+function HeroSlider() {
+  const [i, setI] = useState(0);
+  const total = products.length;
+
+  useEffect(() => {
+    const t = setInterval(() => setI((p) => (p + 1) % total), 5000);
+    return () => clearInterval(t);
+  }, [total]);
+
+  const go = (n: number) => setI((n + total) % total);
+
   return (
     <section className="relative bg-hero-gradient overflow-hidden">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 md:py-24 grid md:grid-cols-2 gap-8 items-center min-h-[480px] md:min-h-[600px]">
-        <div className="space-y-5 sm:space-y-6 text-center md:text-left z-10 order-2 md:order-1">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white">
-            <Zap className="h-3 w-3" /> New Launch
-          </span>
-          <h1 className="font-display text-5xl sm:text-6xl md:text-8xl font-black leading-[0.85] text-white drop-shadow-lg">
-            BOLT PRO
-          </h1>
-          <p className="font-display text-base sm:text-lg md:text-xl text-white/90 uppercase tracking-[0.2em] font-semibold">
-            Premium Smartwatch Series
-          </p>
-          <p className="text-sm sm:text-base text-white/80 max-w-md mx-auto md:mx-0">
-            Pakistan's 1st Flat Edge Design Smartwatch — engineered for the bold.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center md:items-start justify-center md:justify-start pt-2">
-            <a
-              href={WA_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 bg-white text-black font-bold uppercase tracking-wider text-xs sm:text-sm px-7 sm:px-9 py-3.5 sm:py-4 rounded-full hover:scale-105 transition-transform shadow-glow"
-            >
-              Pre-Order Now
-              <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-white/90">
-              <div className="flex">{[...Array(5)].map((_, i) => <Star key={i} className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current text-neon-green" style={{ color: "var(--neon-green)" }} />)}</div>
-              <span>4.9 / 12k reviews</span>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 md:py-20 min-h-[480px] md:min-h-[600px]">
+        {products.map((p, idx) => (
+          <div
+            key={p.slug}
+            className={`grid md:grid-cols-2 gap-8 items-center transition-opacity duration-700 ${
+              idx === i ? "opacity-100 relative" : "opacity-0 absolute inset-0 px-4 sm:px-6 py-10 sm:py-16 md:py-20 pointer-events-none"
+            }`}
+          >
+            <div className="space-y-5 sm:space-y-6 text-center md:text-left z-10 order-2 md:order-1 max-w-xl">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white">
+                <Zap className="h-3 w-3" /> {p.tag ?? "Featured"}
+              </span>
+              <h1 className="font-display text-4xl sm:text-6xl md:text-8xl font-black leading-[0.85] text-white drop-shadow-lg uppercase">
+                {p.name.split(" ").slice(0, 2).join(" ")}
+              </h1>
+              <p className="font-display text-base sm:text-lg md:text-xl text-white/90 uppercase tracking-[0.2em] font-semibold">
+                {p.tagline}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center md:items-start justify-center md:justify-start pt-2">
+                <Link
+                  to="/product/$slug"
+                  params={{ slug: p.slug }}
+                  className="group inline-flex items-center gap-2 bg-white text-black font-bold uppercase tracking-wider text-xs sm:text-sm px-7 sm:px-9 py-3.5 sm:py-4 rounded-full hover:scale-105 transition-transform shadow-glow"
+                >
+                  Shop Now
+                  <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <a
+                  href={waLinkFor(p.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border-2 border-white/70 text-white font-bold uppercase tracking-wider text-xs sm:text-sm px-6 sm:px-8 py-3 sm:py-3.5 rounded-full hover:bg-white hover:text-black transition-colors"
+                >
+                  <MessageCircle className="h-4 w-4" /> Order on WhatsApp
+                </a>
+              </div>
+            </div>
+            <div className="relative flex items-center justify-center order-1 md:order-2">
+              <div className="absolute h-56 w-56 sm:h-72 sm:w-72 md:h-[28rem] md:w-[28rem] rounded-full bg-white/20 blur-3xl" />
+              <img
+                src={p.img}
+                alt={p.name}
+                width={1024}
+                height={1024}
+                className="relative z-10 w-56 sm:w-72 md:w-full md:max-w-lg animate-float drop-shadow-2xl"
+              />
             </div>
           </div>
-        </div>
-        <div className="relative flex items-center justify-center order-1 md:order-2">
-          <div className="absolute h-56 w-56 sm:h-72 sm:w-72 md:h-[28rem] md:w-[28rem] rounded-full bg-white/20 blur-3xl" />
-          <img
-            src={watchImg}
-            alt="BOLT PRO Smartwatch"
-            width={1024}
-            height={1024}
-            className="relative z-10 w-56 sm:w-72 md:w-full md:max-w-lg animate-float drop-shadow-2xl"
-          />
+        ))}
+
+        <button
+          onClick={() => go(i - 1)}
+          aria-label="Previous slide"
+          className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full bg-white/20 backdrop-blur hover:bg-white/40 text-white items-center justify-center transition-colors"
+        >
+          <ChevronLeft className="h-6 w-6" />
+        </button>
+        <button
+          onClick={() => go(i + 1)}
+          aria-label="Next slide"
+          className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 h-11 w-11 rounded-full bg-white/20 backdrop-blur hover:bg-white/40 text-white items-center justify-center transition-colors"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </button>
+
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+          {products.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setI(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+              className={`h-2 rounded-full transition-all ${idx === i ? "w-8 bg-white" : "w-2 bg-white/50"}`}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -156,12 +186,6 @@ function FeatureStrip() {
   );
 }
 
-const products = [
-  { name: "BOLT PRO Smartwatch", price: "PKR 12,999", img: watchImg, tag: "Best Seller" },
-  { name: "Sonic Buds X1", price: "PKR 4,499", img: earbudsImg, tag: "New" },
-  { name: "Aurora Headphones", price: "PKR 8,999", img: headphonesImg, tag: "Limited" },
-];
-
 function Products() {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
@@ -176,40 +200,29 @@ function Products() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
         {products.map((p) => (
-          <div key={p.name} className="group bg-card border border-border rounded-2xl sm:rounded-3xl p-4 sm:p-6 hover:border-accent/50 transition-all hover:-translate-y-1 hover:shadow-product duration-300">
+          <Link
+            key={p.slug}
+            to="/product/$slug"
+            params={{ slug: p.slug }}
+            className="group bg-card border border-border rounded-2xl sm:rounded-3xl p-4 sm:p-6 hover:border-accent/50 transition-all hover:-translate-y-1 hover:shadow-product duration-300 block"
+          >
             <div className="relative aspect-square rounded-xl sm:rounded-2xl bg-secondary overflow-hidden mb-4 sm:mb-6 flex items-center justify-center">
-              <span className="absolute top-3 left-3 z-10 text-[10px] uppercase tracking-widest font-bold bg-accent text-accent-foreground px-2.5 py-1 rounded-full">{p.tag}</span>
+              {p.tag && <span className="absolute top-3 left-3 z-10 text-[10px] uppercase tracking-widest font-bold bg-accent text-accent-foreground px-2.5 py-1 rounded-full">{p.tag}</span>}
               <img src={p.img} alt={p.name} loading="lazy" width={1024} height={1024} className="w-3/4 h-3/4 object-contain group-hover:scale-110 transition-transform duration-500" />
             </div>
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-display text-base sm:text-xl font-bold text-foreground">{p.name}</h3>
               <div className="flex">{[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 fill-current" style={{ color: "var(--neon-green)" }} />)}</div>
             </div>
-            <p className="text-muted-foreground text-xs sm:text-sm mb-4">Premium build. Flagship performance.</p>
+            <p className="text-muted-foreground text-xs sm:text-sm mb-4">{p.tagline}</p>
             <div className="flex items-center justify-between">
               <span className="font-display text-lg sm:text-2xl font-black text-foreground">{p.price}</span>
-              <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="bg-foreground text-background px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold hover:bg-accent transition-colors">
-                Buy Now
-              </a>
+              <span className="bg-foreground text-background px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold group-hover:bg-accent transition-colors">
+                Shop Now
+              </span>
             </div>
-          </div>
+          </Link>
         ))}
-      </div>
-    </section>
-  );
-}
-
-function CTABanner() {
-  return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-12 sm:pb-20">
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-[2.5rem] bg-hero-gradient p-8 sm:p-12 md:p-20 text-center">
-        <div className="relative z-10 max-w-2xl mx-auto space-y-4 sm:space-y-6">
-          <h2 className="font-display text-3xl sm:text-4xl md:text-6xl font-black text-white drop-shadow">Join the Movement.</h2>
-          <p className="text-white/90 text-sm sm:text-lg">Be the first to wear the future. Pre-order BOLT PRO today and get free delivery nationwide.</p>
-          <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-white text-black font-bold uppercase tracking-wider text-xs sm:text-sm px-7 sm:px-10 py-3.5 sm:py-4 rounded-full hover:scale-105 transition-transform shadow-glow">
-            Order on WhatsApp <MessageCircle className="h-4 w-4" />
-          </a>
-        </div>
       </div>
     </section>
   );
@@ -244,7 +257,7 @@ function Footer() {
 function WhatsAppFloat() {
   return (
     <a
-      href={WA_LINK}
+      href={`https://wa.me/923214028277?text=${encodeURIComponent("Hi DesiCart! I have a question.")}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
@@ -258,14 +271,12 @@ function WhatsAppFloat() {
 function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <TopBar />
       <Navbar />
       <main>
-        <Hero />
+        <HeroSlider />
         <Categories />
         <FeatureStrip />
         <Products />
-        <CTABanner />
       </main>
       <Footer />
       <WhatsAppFloat />
