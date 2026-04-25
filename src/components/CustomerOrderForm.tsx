@@ -31,7 +31,12 @@ export function CustomerOrderForm({ product }: CustomerOrderFormProps) {
     event.preventDefault();
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
-    window.open(whatsappLink, "_blank", "noopener,noreferrer");
+    // Use location assignment as a reliable fallback since window.open
+    // can be blocked by popup blockers on mobile browsers.
+    const win = window.open(whatsappLink, "_blank", "noopener,noreferrer");
+    if (!win) {
+      window.location.href = whatsappLink;
+    }
   };
 
   return (
