@@ -150,35 +150,7 @@ function ProductPage() {
               ))}
             </ul>
 
-            {/* Quantity */}
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold text-foreground">Quantity:</span>
-              <div className="inline-flex items-center border border-border rounded-full">
-                <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="px-4 py-2 text-foreground hover:text-accent" aria-label="Decrease">−</button>
-                <span className="px-4 font-bold text-foreground min-w-[2ch] text-center">{qty}</span>
-                <button onClick={() => setQty((q) => q + 1)} className="px-4 py-2 text-foreground hover:text-accent" aria-label="Increase">+</button>
-              </div>
-            </div>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <a
-                href={wa}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-whatsapp text-white font-bold uppercase tracking-wider text-sm px-6 py-4 rounded-full hover:scale-[1.02] transition-transform"
-              >
-                <MessageCircle className="h-5 w-5" /> Buy Now on WhatsApp
-              </a>
-              <a
-                href={wa}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 border-2 border-foreground text-foreground font-bold uppercase tracking-wider text-sm px-6 py-4 rounded-full hover:bg-foreground hover:text-background transition-colors"
-              >
-                <ShoppingCart className="h-5 w-5" /> Add to Cart
-              </a>
-            </div>
+            <CustomerOrderForm product={product} />
 
             {/* Trust strip */}
             <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border">
