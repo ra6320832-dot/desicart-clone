@@ -24,7 +24,7 @@ export function CustomerOrderForm({ product }: CustomerOrderFormProps) {
       .filter(Boolean)
       .join("\n");
 
-    return `https://web.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+    return `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
   }, [details, product.name, product.price, qty]);
 
   const submitOrder = (event: FormEvent<HTMLFormElement>) => {
