@@ -31,7 +31,12 @@ export function CustomerOrderForm({ product }: CustomerOrderFormProps) {
     event.preventDefault();
     const form = event.currentTarget;
     if (!form.reportValidity()) return;
-    window.open(whatsappLink, "_blank", "noopener,noreferrer");
+    // Use location assignment as a reliable fallback since window.open
+    // can be blocked by popup blockers on mobile browsers.
+    const win = window.open(whatsappLink, "_blank", "noopener,noreferrer");
+    if (!win) {
+      window.location.href = whatsappLink;
+    }
   };
 
   return (
@@ -53,9 +58,21 @@ export function CustomerOrderForm({ product }: CustomerOrderFormProps) {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 pt-1">
-        <button type="submit" className="flex-1 inline-flex items-center justify-center gap-2 bg-whatsapp text-primary-foreground font-bold uppercase tracking-wider text-sm px-6 py-4 rounded-full hover:scale-[1.02] transition-transform">
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => {
+            // Validate form fields before navigating
+            const form = e.currentTarget.closest("form") as HTMLFormElement | null;
+            if (form && !form.reportValidity()) {
+              e.preventDefault();
+            }
+          }}
+          className="flex-1 inline-flex items-center justify-center gap-2 bg-whatsapp text-primary-foreground font-bold uppercase tracking-wider text-sm px-6 py-4 rounded-full hover:scale-[1.02] transition-transform"
+        >
           <MessageCircle className="h-5 w-5" /> Buy Now on WhatsApp
-        </button>
+        </a>
         <button type="submit" className="flex-1 inline-flex items-center justify-center gap-2 border-2 border-foreground text-foreground font-bold uppercase tracking-wider text-sm px-6 py-4 rounded-full hover:bg-foreground hover:text-background transition-colors">
           <ShoppingCart className="h-5 w-5" /> Add to Cart
         </button>
