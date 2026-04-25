@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronLeft, MessageCircle, ShoppingCart, Star, Truck, ShieldCheck, Zap, Search, Menu, User } from "lucide-react";
 import { getProduct, products, waLinkFor } from "@/lib/products";
+import { CustomerOrderForm } from "@/components/CustomerOrderForm";
 
 export const Route = createFileRoute("/product/$slug")({
   component: ProductPage,
@@ -38,31 +39,53 @@ export const Route = createFileRoute("/product/$slug")({
 });
 
 function MiniNav() {
+  const [open, setOpen] = useState(false);
+  const links = [
+    { label: "Home", href: "/" },
+    { label: "Smart Watches", href: "/product/bolt-pro" },
+    { label: "Earbuds", href: "/product/sonic-buds-x1" },
+    { label: "Headphones", href: "/product/aurora-headphones" },
+    { label: "Support", href: "https://wa.me/923214028277?text=Hi%20DesiCart!%20I%20need%20support." },
+  ];
+
   return (
     <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button aria-label="Menu" className="md:hidden text-foreground"><Menu className="h-6 w-6" /></button>
+          <button onClick={() => setOpen((v) => !v)} aria-label="Menu" className="md:hidden text-foreground"><Menu className="h-6 w-6" /></button>
           <Link to="/" className="font-display text-xl sm:text-2xl font-black tracking-tight text-foreground">
             Desi<span className="text-accent">Cart</span>
           </Link>
         </div>
+        <ul className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/80">
+          {links.map((link) => (
+            <li key={link.label}><a href={link.href} className="hover:text-accent transition-colors">{link.label}</a></li>
+          ))}
+        </ul>
         <div className="flex items-center gap-3 sm:gap-4 text-foreground">
-          <button aria-label="Search" className="hover:text-accent transition-colors"><Search className="h-5 w-5" /></button>
-          <button aria-label="Account" className="hidden sm:inline hover:text-accent transition-colors"><User className="h-5 w-5" /></button>
-          <button aria-label="Cart" className="relative hover:text-accent transition-colors">
+          <Link to="/" aria-label="Search products" className="hover:text-accent transition-colors"><Search className="h-5 w-5" /></Link>
+          <a href="https://wa.me/923214028277?text=Hi%20DesiCart!%20I%20need%20support." target="_blank" rel="noopener noreferrer" aria-label="Account support" className="hidden sm:inline hover:text-accent transition-colors"><User className="h-5 w-5" /></a>
+          <a href="https://wa.me/923214028277?text=Hi%20DesiCart!%20I%20want%20to%20place%20an%20order." target="_blank" rel="noopener noreferrer" aria-label="Cart" className="relative hover:text-accent transition-colors">
             <ShoppingCart className="h-5 w-5" />
-          </button>
+          </a>
         </div>
       </div>
+      {open && (
+        <div className="md:hidden border-t border-border bg-background px-4 py-3">
+          <div className="flex flex-col gap-3 text-sm font-semibold text-foreground/80">
+            {links.map((link) => (
+              <a key={link.label} href={link.href} onClick={() => setOpen(false)} className="py-1 hover:text-accent transition-colors">{link.label}</a>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
 
 function ProductPage() {
   const { product } = Route.useLoaderData();
-  const [qty, setQty] = useState(1);
-  const wa = waLinkFor(`${qty} x ${product.name}`);
+  const wa = waLinkFor(product.name);
 
   const related = products.filter((p) => p.slug !== product.slug);
 
