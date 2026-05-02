@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build --config vite.config.prod.ts",
+    "build": "vite build --config vite.config.prod.ts && node scripts/hostinger-static-export.mjs",
     "build:dev": "vite build --mode development",
     "start": "node app.js",
     "preview": "vite preview",
