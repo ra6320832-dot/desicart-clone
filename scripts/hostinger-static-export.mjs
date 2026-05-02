@@ -8,8 +8,9 @@ const clientDir = resolve(distDir, "client");
 const indexFile = resolve(clientDir, "index.html");
 
 if (!existsSync(indexFile)) {
-  console.error("Hostinger export failed: dist/client/index.html was not created.");
-  process.exit(1);
+  const server = (await import(resolve(distDir, "server/server.js"))).default;
+  const response = await server.fetch(new Request("http://localhost/"));
+  await writeFile(indexFile, await response.text());
 }
 
 await mkdir(distDir, { recursive: true });
